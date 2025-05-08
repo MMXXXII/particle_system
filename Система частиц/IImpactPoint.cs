@@ -15,21 +15,20 @@ namespace Система_частиц
         // например притягивать
         public abstract void ImpactParticle(Particle particle);
 
-        public virtual void Render(Graphics g) // добавил слово virtual, ну чтобы override потом можно было юзать
-        {
-            g.FillEllipse(
-                    new SolidBrush(Color.Red),
-                    X - 5,
-                    Y - 5,
-                    10,
-                    10
-                );
-        }
+        public virtual void Render(Graphics g) { }
     }
 
     public class GravityPoint : IImpactPoint
     {
         public int Power = 100; // сила притяжения
+        public int ParticleCount = 0; // количество частиц внутри круга
+        public Color PointColor = Color.Red; // Цвет круга
+
+        // Сбрасывает количество частиц
+        public void ResetParticleCount()
+        {
+            ParticleCount = 0;
+        }
 
         // а сюда по сути скопировали с минимальными правками то что было в UpdateState
         public override void ImpactParticle(Particle particle)
@@ -37,64 +36,51 @@ namespace Система_частиц
             float gX = X - particle.X;
             float gY = Y - particle.Y;
 
-            double r = Math.Sqrt(gX * gX + gY * gY); // считаем расстояние от центра точки до центра частицы
-            if (r + particle.Radius < Power / 2) // если частица оказалось внутри окружности
+            double r = Math.Sqrt(gX * gX + gY * gY); // расстояние от центра точки до центра частицы
+            if (r + particle.Radius < Power / 2) // если частица внутри окружности
             {
-                // то притягиваем ее
+                ParticleCount++; // увеличиваем счетчик частиц
+
+                // Притягиваем частицу
                 float r2 = (float)Math.Max(100, gX * gX + gY * gY);
                 particle.SpeedX += gX * Power / r2;
                 particle.SpeedY += gY * Power / r2;
+
+                // Перекрашиваем частицу при попадании в круг
+                if (particle is Particle.ParticleColorful colorfulParticle)
+                {
+                    colorfulParticle.FromColor = PointColor;
+                    colorfulParticle.ToColor = Color.FromArgb(0, PointColor);
+                }
             }
         }
 
+
+
         public override void Render(Graphics g)
         {
-            // буду рисовать окружность с диаметром равным Power
-            g.DrawEllipse(
-                   new Pen(Color.Red),
-                   X - Power / 2,
-                   Y - Power / 2,
-                   Power,
-                   Power
-               );
+            // рисую окружность с выбранным цветом
+            using (var brush = new SolidBrush(Color.FromArgb(100, PointColor)))
+            {
+                g.FillEllipse(brush, X - Power / 2, Y - Power / 2, Power, Power);
+            }
 
-            var stringFormat = new StringFormat();
-            stringFormat.Alignment = StringAlignment.Center;
-            stringFormat.LineAlignment = StringAlignment.Center;
+            g.DrawEllipse(new Pen(PointColor), X - Power / 2, Y - Power / 2, Power, Power);
 
-            // обязательно выносим текст и шрифт в переменные
-            var text = $"Я гравитон\nc силой {Power}";
+            var stringFormat = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
             var font = new Font("Verdana", 10);
 
-            // вызываем MeasureString, чтобы померить размеры текста
-            var size = g.MeasureString(text, font);
-
-            // рисуем подложнку под текст
-            g.FillRectangle(
-                new SolidBrush(Color.Red),
-                X - size.Width / 2, // так как я выравнивал текст по центру то подложка должна быть центрирована относительно X,Y
-                Y - size.Height / 2,
-                size.Width,
-                size.Height
-            );
-
-            // ну и текст рисую уже на базе переменных
-            g.DrawString(
-                text,
-                font,
-                new SolidBrush(Color.White),
-                X,
-                Y,
-                stringFormat
-            );
+            // текст с информацией
+            var text = $"Частиц: {ParticleCount}";
+            g.DrawString(text, font, new SolidBrush(Color.Black), X, Y, stringFormat);
         }
     }
+
 
     public class AntiGravityPoint : IImpactPoint
     {
         public int Power = 100; // сила отторжения
 
-        // а сюда по сути скопировали с минимальными правками то что было в UpdateState
         public override void ImpactParticle(Particle particle)
         {
             float gX = X - particle.X;

@@ -35,7 +35,7 @@ namespace Система_частиц
 
         public float GravitationX = 0;
         public float GravitationY = 0;
-
+        public int TotalParticlesCreated { get; private set; } = 0;
 
         /* добавил метод */
         public virtual Particle CreateParticle()
@@ -67,29 +67,25 @@ namespace Система_частиц
         }
         public void UpdateState()
         {
-            int particlesToCreate = ParticlesPerTick; // фиксируем счетчик сколько частиц нам создавать за тик
+            int particlesToCreate = ParticlesPerTick;
 
             foreach (var particle in particles)
             {
-                
-
-                if (particle.Life <= 0) // если частицы умерла
+                if (particle.Life <= 0)
                 {
-
                     if (particlesToCreate > 0)
                     {
-                        /* у нас как сброс частицы равносилен созданию частицы */
-                        particlesToCreate -= 1; // поэтому уменьшаем счётчик созданных частиц на 1
+                        particlesToCreate -= 1;
                         ResetParticle(particle);
+                        TotalParticlesCreated++; // Увеличиваем счетчик созданных частиц
                     }
                 }
                 else
                 {
-                    /* теперь двигаю вначале */
                     particle.X += particle.SpeedX;
                     particle.Y += particle.SpeedY;
-
                     particle.Life -= 1;
+
                     foreach (var point in impactPoints)
                     {
                         point.ImpactParticle(particle);
@@ -97,26 +93,20 @@ namespace Система_частиц
 
                     particle.SpeedX += GravitationX;
                     particle.SpeedY += GravitationY;
-
-                    /* это уехало вверх
-                    particle.X += particle.SpeedX;
-                    particle.Y += particle.SpeedY; */
                 }
-
             }
 
-
-            // второй цикл меняем на while, 
-            // этот новый цикл также будет срабатывать только в самом начале работы эмиттера
-            // собственно пока не накопится критическая масса частиц
             while (particlesToCreate >= 1)
             {
                 particlesToCreate -= 1;
                 var particle = CreateParticle();
                 ResetParticle(particle);
                 particles.Add(particle);
+
+                TotalParticlesCreated++; // Увеличиваем счетчик созданных частиц
             }
         }
+
         
         public void Render(Graphics g)
         {

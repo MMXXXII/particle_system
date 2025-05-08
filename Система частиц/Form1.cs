@@ -10,7 +10,7 @@ namespace Система_частиц
         Emitter emitter; // добавим поле для эмиттера
 
         GravityPoint point1; // добавил поле под первую точку
-        GravityPoint point2; // добавил поле под вторую точку
+
 
         public Form1()
         {
@@ -23,8 +23,8 @@ namespace Система_частиц
                 Spreading = 10,
                 SpeedMin = 10,
                 SpeedMax = 10,
-                ColorFrom = Color.Gold,
-                ColorTo = Color.FromArgb(0, Color.Red),
+                ColorFrom = Color.Black,  // Начальный цвет - черный
+                ColorTo = Color.FromArgb(0, Color.Black),
                 ParticlesPerTick = 10,
                 X = picDisplay.Width / 2,
                 Y = picDisplay.Height / 2,
@@ -40,15 +40,11 @@ namespace Система_частиц
                 X = picDisplay.Width / 2 + 100,
                 Y = picDisplay.Height / 2,
             };
-            point2 = new GravityPoint
-            {
-                X = picDisplay.Width / 2 - 100,
-                Y = picDisplay.Height / 2,
-            };
+
 
             // привязываем поля к эмиттеру
             emitter.impactPoints.Add(point1);
-            emitter.impactPoints.Add(point2);
+
 
 
         }
@@ -57,16 +53,27 @@ namespace Система_частиц
         // ну и обработка тика таймера, тут просто декомпозицию выполнили
         private void timer1_Tick(object sender, EventArgs e)
         {
-            emitter.UpdateState(); // тут теперь обновляем эмиттер
+            // Сбрасываем счетчик частиц в гравитационной точке
+            point1.ResetParticleCount();
+
+            // Обновляем состояние эмиттера
+            emitter.UpdateState();
 
             using (var g = Graphics.FromImage(picDisplay.Image))
             {
-                g.Clear(Color.Black);
-                emitter.Render(g); // а тут теперь рендерим через эмиттер
+                g.Clear(Color.White);
+                emitter.Render(g);
             }
+
+            // Используем новый счетчик TotalParticlesCreated
+            label4.Text = $"Всего создано частиц: {emitter.TotalParticlesCreated}";
 
             picDisplay.Invalidate();
         }
+
+
+
+
         private void picDisplay_MouseMove(object sender, MouseEventArgs e)
         {
             // это не трогаем
@@ -77,24 +84,51 @@ namespace Система_частиц
             }
 
             // а тут передаем положение мыши, в положение гравитона
-            point2.X = e.X;
-            point2.Y = e.Y;
+            point1.X = e.X;
+            point1.Y = e.Y;
         }
 
         private void tbDirection_Scroll_1(object sender, EventArgs e)
         {
             emitter.Direction = tbDirection.Value;
-            lblDirection.Text = $"{tbDirection.Value}°"; // добавил вывод значения
+            label2.Text = $"Направление: {tbDirection.Value}°"; // добавил вывод значения
         }
 
         private void tbGraviton_Scroll(object sender, EventArgs e)
         {
             point1.Power = tbGraviton.Value;
+            label3.Text = $"Размер гравитона: {tbGraviton.Value}";
         }
 
-        private void tbGraviton1_Scroll(object sender, EventArgs e)
+
+        private void label4_Click(object sender, EventArgs e)
         {
-            point2.Power = tbGraviton1.Value;
+
         }
+
+        private void tbSpeed_Scroll(object sender, EventArgs e)
+        {
+            // Изменяем минимальную и максимальную скорость в зависимости от положения ползунка
+            emitter.SpeedMin = tbSpeed.Value / 2; // Минимальная скорость будет в диапазоне от 0 до 50
+            emitter.SpeedMax = tbSpeed.Value;     // Максимальная скорость будет от 0 до 100
+
+            // Отображаем текущую скорость на метке (опционально)
+            label5.Text = $"Скорость: {tbSpeed.Value}";
+        }
+
+        private void btnChooseColor_Click(object sender, EventArgs e)
+        {
+            using (ColorDialog colorDialog = new ColorDialog())
+            {
+                if (colorDialog.ShowDialog() == DialogResult.OK)
+                {
+                    point1.PointColor = colorDialog.Color; // устанавливаем цвет для точки
+                    emitter.ColorFrom = colorDialog.Color; // начальный цвет для частиц
+                    emitter.ColorTo = Color.FromArgb(0, colorDialog.Color); // конечный цвет для частиц
+                }
+            }
+        }
+
+
     }
 }

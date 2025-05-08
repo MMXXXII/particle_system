@@ -34,11 +34,18 @@
             tbDirection = new TrackBar();
             lblDirection = new Label();
             tbGraviton = new TrackBar();
-            tbGraviton1 = new TrackBar();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            tbSpeed = new TrackBar();
+            label5 = new Label();
+            colorDialog1 = new ColorDialog();
+            btnChooseColor = new Button();
             ((System.ComponentModel.ISupportInitialize)picDisplay).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tbDirection).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tbGraviton).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)tbGraviton1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)tbSpeed).BeginInit();
             SuspendLayout();
             // 
             // picDisplay
@@ -58,10 +65,10 @@
             // 
             // tbDirection
             // 
-            tbDirection.Location = new Point(12, 458);
+            tbDirection.Location = new Point(803, 113);
             tbDirection.Maximum = 359;
             tbDirection.Name = "tbDirection";
-            tbDirection.Size = new Size(240, 56);
+            tbDirection.Size = new Size(232, 56);
             tbDirection.TabIndex = 1;
             tbDirection.Scroll += tbDirection_Scroll_1;
             // 
@@ -75,38 +82,104 @@
             // 
             // tbGraviton
             // 
-            tbGraviton.Location = new Point(452, 458);
+            tbGraviton.Location = new Point(832, 196);
             tbGraviton.Maximum = 100;
             tbGraviton.Name = "tbGraviton";
-            tbGraviton.Size = new Size(130, 56);
+            tbGraviton.Size = new Size(181, 56);
             tbGraviton.TabIndex = 3;
             tbGraviton.Scroll += tbGraviton_Scroll;
             // 
-            // tbGraviton1
+            // label1
             // 
-            tbGraviton1.Location = new Point(643, 458);
-            tbGraviton1.Maximum = 100;
-            tbGraviton1.Name = "tbGraviton1";
-            tbGraviton1.Size = new Size(130, 56);
-            tbGraviton1.TabIndex = 4;
-            tbGraviton1.Scroll += tbGraviton1_Scroll;
+            label1.AutoSize = true;
+            label1.Font = new Font("Bahnschrift Condensed", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(884, 12);
+            label1.Name = "label1";
+            label1.Size = new Size(83, 41);
+            label1.TabIndex = 5;
+            label1.Text = "Меню";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Bahnschrift Condensed", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label2.Location = new Point(880, 89);
+            label2.Name = "label2";
+            label2.Size = new Size(87, 21);
+            label2.TabIndex = 6;
+            label2.Text = "Направление";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Bahnschrift Condensed", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label3.Location = new Point(868, 172);
+            label3.Name = "label3";
+            label3.Size = new Size(110, 21);
+            label3.TabIndex = 7;
+            label3.Text = "Размер гравитона";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(803, 53);
+            label4.Name = "label4";
+            label4.Size = new Size(194, 20);
+            label4.TabIndex = 8;
+            label4.Text = "Общее количество частиц:";
+            label4.Click += label4_Click;
+            // 
+            // tbSpeed
+            // 
+            tbSpeed.Location = new Point(803, 275);
+            tbSpeed.Maximum = 100;
+            tbSpeed.Name = "tbSpeed";
+            tbSpeed.Size = new Size(232, 56);
+            tbSpeed.TabIndex = 10;
+            tbSpeed.Scroll += tbSpeed_Scroll;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Bahnschrift Condensed", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label5.Location = new Point(897, 251);
+            label5.Name = "label5";
+            label5.Size = new Size(60, 21);
+            label5.TabIndex = 11;
+            label5.Text = "Скорость";
+            // 
+            // btnChooseColor
+            // 
+            btnChooseColor.Location = new Point(859, 361);
+            btnChooseColor.Name = "btnChooseColor";
+            btnChooseColor.Size = new Size(94, 29);
+            btnChooseColor.TabIndex = 12;
+            btnChooseColor.Text = "button1";
+            btnChooseColor.UseVisualStyleBackColor = true;
+            btnChooseColor.Click += btnChooseColor_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 526);
-            Controls.Add(tbGraviton1);
+            ClientSize = new Size(1069, 550);
+            Controls.Add(btnChooseColor);
+            Controls.Add(label5);
+            Controls.Add(tbSpeed);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
             Controls.Add(tbGraviton);
             Controls.Add(lblDirection);
             Controls.Add(tbDirection);
             Controls.Add(picDisplay);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Система частиц";
             ((System.ComponentModel.ISupportInitialize)picDisplay).EndInit();
             ((System.ComponentModel.ISupportInitialize)tbDirection).EndInit();
             ((System.ComponentModel.ISupportInitialize)tbGraviton).EndInit();
-            ((System.ComponentModel.ISupportInitialize)tbGraviton1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)tbSpeed).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -118,6 +191,13 @@
         private TrackBar tbDirection;
         private Label lblDirection;
         private TrackBar tbGraviton;
-        private TrackBar tbGraviton1;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private TrackBar tbSpeed;
+        private Label label5;
+        private ColorDialog colorDialog1;
+        private Button btnChooseColor;
     }
 }

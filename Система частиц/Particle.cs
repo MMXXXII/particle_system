@@ -41,11 +41,12 @@ namespace Система_частиц
         }
 
         // новый класс для цветных частиц
+        // новый класс для цветных частиц
         public class ParticleColorful : Particle
         {
             // два новых поля под цвет начальный и конечный
-            public Color FromColor;
-            public Color ToColor;
+            public Color FromColor = Color.Black; // Черный по умолчанию
+            public Color ToColor = Color.Black;   // Черный по умолчанию
 
             // для смеси цветов
             public static Color MixColor(Color color1, Color color2, float k)
@@ -58,7 +59,7 @@ namespace Система_частиц
                 );
             }
 
-            // ну и отрисовку перепишем
+            // отрисовка частицы
             public override void Draw(Graphics g)
             {
                 float k = Math.Min(1f, Life / 100);
@@ -72,5 +73,6 @@ namespace Система_частиц
                 b.Dispose();
             }
         }
+
     }
 }
