@@ -53,22 +53,25 @@ namespace Система_частиц
         // ну и обработка тика таймера, тут просто декомпозицию выполнили
         private void timer1_Tick(object sender, EventArgs e)
         {
-            // Сбрасываем счетчик частиц в гравитационной точке
-            point1.ResetParticleCount();
-
-            // Обновляем состояние эмиттера
-            emitter.UpdateState();
-
-            using (var g = Graphics.FromImage(picDisplay.Image))
+            if (!isPaused) // Если не на паузе, обновляем эмиттер
             {
-                g.Clear(Color.White);
-                emitter.Render(g);
+                // Сбрасываем счетчик частиц в гравитационной точке
+                point1.ResetParticleCount();
+
+                // Обновляем состояние эмиттера
+                emitter.UpdateState();
+
+                using (var g = Graphics.FromImage(picDisplay.Image))
+                {
+                    g.Clear(Color.White);
+                    emitter.Render(g);
+                }
+
+                // Используем новый счетчик TotalParticlesCreated
+                label4.Text = $"Всего создано частиц: {emitter.TotalParticlesCreated}";
+
+                picDisplay.Invalidate();
             }
-
-            // Используем новый счетчик TotalParticlesCreated
-            label4.Text = $"Всего создано частиц: {emitter.TotalParticlesCreated}";
-
-            picDisplay.Invalidate();
         }
 
 
@@ -129,6 +132,22 @@ namespace Система_частиц
             }
         }
 
+        private bool isPaused = false; // Переменная для отслеживания состояния паузы
+
+        private void pause_Click(object sender, EventArgs e)
+        {
+            isPaused = !isPaused; // Переключаем состояние паузы
+
+            // Обновляем текст кнопки в зависимости от состояния
+            if (isPaused)
+            {
+                pause.Text = "Пуск"; // Текст кнопки при паузе
+            }
+            else
+            {
+                pause.Text = "Пауза"; // Текст кнопки при запуске
+            }
+        }
 
     }
 }

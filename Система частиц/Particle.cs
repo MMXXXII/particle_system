@@ -44,35 +44,42 @@ namespace Система_частиц
         // новый класс для цветных частиц
         public class ParticleColorful : Particle
         {
-            // два новых поля под цвет начальный и конечный
-            public Color FromColor = Color.Black; // Черный по умолчанию
-            public Color ToColor = Color.Black;   // Черный по умолчанию
+            public Color FromColor { get; set; } = Color.Black; // Исходный цвет (черный)
+            public Color CurrentColor { get; set; }             // Текущий цвет частицы
+            public bool IsColored { get; set; } = false;        // Флаг, который будет указывать, перекрашивалась ли частица
 
-            // для смеси цветов
-            public static Color MixColor(Color color1, Color color2, float k)
+            public ParticleColorful()
             {
-                return Color.FromArgb(
-                    (int)(color2.A * k + color1.A * (1 - k)),
-                    (int)(color2.R * k + color1.R * (1 - k)),
-                    (int)(color2.G * k + color1.G * (1 - k)),
-                    (int)(color2.B * k + color1.B * (1 - k))
-                );
+                CurrentColor = FromColor; // Изначально частица черная
             }
 
-            // отрисовка частицы
+            // Переопределяем метод Draw
             public override void Draw(Graphics g)
             {
-                float k = Math.Min(1f, Life / 100);
-
-                // так как k уменьшается от 1 до 0, то порядок цветов обратный
-                var color = MixColor(ToColor, FromColor, k);
-                var b = new SolidBrush(color);
-
+                var b = new SolidBrush(CurrentColor);
                 g.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2);
-
                 b.Dispose();
+            }
+
+            // Метод для изменения цвета при попадании в круг
+            public void ChangeColor(Color color)
+            {
+                CurrentColor = color;
+                IsColored = true; // Устанавливаем флаг, что частица перекрасилась
+            }
+
+            // Метод для сброса цвета в черный после исчезновения, если не перекрашивалась
+            public void ResetColor()
+            {
+                if (!IsColored) // Если цвет не менялся, то сбрасываем на черный
+                {
+                    CurrentColor = FromColor;
+                }
             }
         }
 
+
     }
+
 }
+

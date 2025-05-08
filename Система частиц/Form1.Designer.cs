@@ -42,6 +42,7 @@
             label5 = new Label();
             colorDialog1 = new ColorDialog();
             btnChooseColor = new Button();
+            pause = new Button();
             ((System.ComponentModel.ISupportInitialize)picDisplay).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tbDirection).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tbGraviton).BeginInit();
@@ -150,19 +151,30 @@
             // 
             // btnChooseColor
             // 
-            btnChooseColor.Location = new Point(859, 361);
+            btnChooseColor.Location = new Point(810, 337);
             btnChooseColor.Name = "btnChooseColor";
-            btnChooseColor.Size = new Size(94, 29);
+            btnChooseColor.Size = new Size(225, 29);
             btnChooseColor.TabIndex = 12;
-            btnChooseColor.Text = "button1";
+            btnChooseColor.Text = "Изменение цвета гравитона";
             btnChooseColor.UseVisualStyleBackColor = true;
             btnChooseColor.Click += btnChooseColor_Click;
+            // 
+            // pause
+            // 
+            pause.Location = new Point(880, 387);
+            pause.Name = "pause";
+            pause.Size = new Size(94, 29);
+            pause.TabIndex = 13;
+            pause.Text = "Пауза";
+            pause.UseVisualStyleBackColor = true;
+            pause.Click += pause_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1069, 550);
+            Controls.Add(pause);
             Controls.Add(btnChooseColor);
             Controls.Add(label5);
             Controls.Add(tbSpeed);
@@ -199,5 +211,6 @@
         private Label label5;
         private ColorDialog colorDialog1;
         private Button btnChooseColor;
+        private Button pause;
     }
 }
