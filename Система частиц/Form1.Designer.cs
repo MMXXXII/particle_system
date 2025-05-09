@@ -43,6 +43,7 @@
             colorDialog1 = new ColorDialog();
             btnChooseColor = new Button();
             pause = new Button();
+            checkBox1 = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)picDisplay).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tbDirection).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tbGraviton).BeginInit();
@@ -169,11 +170,23 @@
             pause.UseVisualStyleBackColor = true;
             pause.Click += pause_Click;
             // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(874, 450);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(123, 24);
+            checkBox1.TabIndex = 15;
+            checkBox1.Text = "Черная дыра";
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1069, 550);
+            Controls.Add(checkBox1);
             Controls.Add(pause);
             Controls.Add(btnChooseColor);
             Controls.Add(label5);
@@ -212,5 +225,6 @@
         private ColorDialog colorDialog1;
         private Button btnChooseColor;
         private Button pause;
+        private CheckBox checkBox1;
     }
 }

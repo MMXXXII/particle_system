@@ -118,4 +118,51 @@ namespace Система_частиц
         }
     }
 
+    public class BlackHolePoint : IImpactPoint
+    {
+        public int Radius = 50; // Радиус черной дыры
+        public int ParticlesEaten = 0; // Счетчик съеденных частиц
+        public Color PointColor = Color.Black; // Цвет черной дыры
+
+        public override void ImpactParticle(Particle particle)
+        {
+            float gX = X - particle.X;
+            float gY = Y - particle.Y;
+            double distance = Math.Sqrt(gX * gX + gY * gY);
+
+            // Если частица находится внутри черной дыры, она уничтожается
+            if (distance < Radius)
+            {
+                particle.Life = 0; // Уничтожаем частицу
+                ParticlesEaten++;  // Увеличиваем счетчик съеденных частиц
+            }
+        }
+
+        public override void Render(Graphics g)
+        {
+            // Рисуем черную дыру
+            using (var brush = new SolidBrush(PointColor))
+            {
+                g.FillEllipse(brush, X - Radius, Y - Radius, Radius * 2, Radius * 2);
+            }
+
+            g.DrawEllipse(new Pen(Color.White, 2), X - Radius, Y - Radius, Radius * 2, Radius * 2);
+
+            var stringFormat = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+            var font = new Font("Verdana", 10);
+
+            // текст с количеством съеденных частиц внутри круга
+            var text = $"Съедено: {ParticlesEaten}";
+            g.DrawString(text, font, new SolidBrush(Color.White), X, Y, stringFormat);
+        }
+
+
+        // Метод сброса счетчика
+        public void ResetParticlesEaten()
+        {
+            ParticlesEaten = 0;
+        }
+    }
+
+
 }

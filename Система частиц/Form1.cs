@@ -10,6 +10,9 @@ namespace Система_частиц
         Emitter emitter; // добавим поле для эмиттера
 
         GravityPoint point1; // добавил поле под первую точку
+        BlackHolePoint blackHole;
+        bool isBlackHoleEnabled = false; // Флаг, активна ли черная дыра
+
 
 
         public Form1()
@@ -45,6 +48,14 @@ namespace Система_частиц
             // привязываем поля к эмиттеру
             emitter.impactPoints.Add(point1);
 
+            blackHole = new BlackHolePoint
+            {
+                X = picDisplay.Width / 2 - 150,
+                Y = picDisplay.Height / 2,
+                Radius = 50 // Радиус черной дыры
+            };
+
+
 
 
         }
@@ -71,6 +82,18 @@ namespace Система_частиц
                 label4.Text = $"Всего создано частиц: {emitter.TotalParticlesCreated}";
 
                 picDisplay.Invalidate();
+
+
+                if (isBlackHoleEnabled)
+                {
+                    blackHole.ResetParticlesEaten(); // Сбрасываем счетчик черной дыры
+                }
+
+                
+
+
+
+
             }
         }
 
@@ -146,6 +169,28 @@ namespace Система_частиц
             else
             {
                 pause.Text = "Пауза"; // Текст кнопки при запуске
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            isBlackHoleEnabled = checkBox1.Checked;
+
+            if (isBlackHoleEnabled)
+            {
+                // Добавляем черную дыру в список, если включена
+                if (!emitter.impactPoints.Contains(blackHole))
+                {
+                    emitter.impactPoints.Add(blackHole);
+                }
+            }
+            else
+            {
+                // Убираем черную дыру из списка, если выключена
+                if (emitter.impactPoints.Contains(blackHole))
+                {
+                    emitter.impactPoints.Remove(blackHole);
+                }
             }
         }
 
