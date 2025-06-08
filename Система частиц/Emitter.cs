@@ -7,7 +7,6 @@ using static Система_частиц.Particle;
 
 namespace Система_частиц
 {
-
     public class Emitter
     {
         public int X; // координата X центра эмиттера
@@ -67,30 +66,28 @@ namespace Система_частиц
             }
         }
 
-
-
-
+        // Обновление состояния частиц
+        // Обновление состояния частиц
         // Обновление состояния частиц
         public void UpdateState()
         {
             int particlesToCreate = ParticlesPerTick;
 
+            // Если время жизни 0, не создаем новые частицы
+            if (LifeMax <= 0)
+            {
+                particlesToCreate = 0;
+            }
+
+            // Создаем список частиц для удаления
+            List<Particle> particlesToRemove = new List<Particle>();
+
             foreach (var particle in particles)
             {
                 if (particle.Life <= 0)
                 {
-                    // При исчезновении сбрасываем цвет в черный, если не был перекрашен
-                    if (particle is ParticleColorful colorfulParticle && !colorfulParticle.IsColored)
-                    {
-                        colorfulParticle.ResetColor(); // возвращаем цвет в черный
-                    }
-
-                    if (particlesToCreate > 0)
-                    {
-                        particlesToCreate -= 1;
-                        ResetParticle(particle);
-                        TotalParticlesCreated++; // Увеличиваем счетчик созданных частиц
-                    }
+                    // Добавляем частицу в список на удаление
+                    particlesToRemove.Add(particle);
                 }
                 else
                 {
@@ -108,14 +105,19 @@ namespace Система_частиц
                 }
             }
 
-            while (particlesToCreate >= 1)
+            // Удаляем все мертвые частицы
+            foreach (var particle in particlesToRemove)
             {
-                particlesToCreate -= 1;
+                particles.Remove(particle);
+            }
+
+            // Создаем новые частицы только если время жизни больше 0
+            for (int i = 0; i < particlesToCreate; i++)
+            {
                 var particle = CreateParticle();
                 ResetParticle(particle);
                 particles.Add(particle);
-
-                TotalParticlesCreated++; // Увеличиваем счетчик созданных частиц
+                TotalParticlesCreated++;
             }
         }
 
@@ -133,5 +135,4 @@ namespace Система_частиц
             }
         }
     }
-
 }

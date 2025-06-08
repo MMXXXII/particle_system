@@ -20,11 +20,11 @@ namespace Система_частиц
 
         public static Random rand = new Random();
 
-
         public virtual void Draw(Graphics g)
         {
             /* ... */
         }
+
         public Particle()
         {
             // генерируем произвольное направление и скорость
@@ -40,7 +40,6 @@ namespace Система_частиц
             Life = 20 + rand.Next(100);
         }
 
-        // новый класс для цветных частиц
         // новый класс для цветных частиц
         public class ParticleColorful : Particle
         {
@@ -77,9 +76,5 @@ namespace Система_частиц
                 }
             }
         }
-
-
     }
-
 }
-

@@ -44,17 +44,26 @@
             btnChooseColor = new Button();
             pause = new Button();
             checkBox1 = new CheckBox();
+            trackBar1 = new TrackBar();
+            label6 = new Label();
+            trackBar2 = new TrackBar();
+            label7 = new Label();
+            checkBox2 = new CheckBox();
+            button1 = new Button();
+            checkBox3 = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)picDisplay).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tbDirection).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tbGraviton).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tbSpeed).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
             SuspendLayout();
             // 
             // picDisplay
             // 
             picDisplay.Location = new Point(12, 12);
             picDisplay.Name = "picDisplay";
-            picDisplay.Size = new Size(776, 426);
+            picDisplay.Size = new Size(776, 733);
             picDisplay.TabIndex = 0;
             picDisplay.TabStop = false;
             picDisplay.MouseMove += picDisplay_MouseMove;
@@ -144,7 +153,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Bahnschrift Condensed", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            label5.Location = new Point(897, 251);
+            label5.Location = new Point(884, 251);
             label5.Name = "label5";
             label5.Size = new Size(60, 21);
             label5.TabIndex = 11;
@@ -152,7 +161,7 @@
             // 
             // btnChooseColor
             // 
-            btnChooseColor.Location = new Point(810, 337);
+            btnChooseColor.Location = new Point(810, 490);
             btnChooseColor.Name = "btnChooseColor";
             btnChooseColor.Size = new Size(225, 29);
             btnChooseColor.TabIndex = 12;
@@ -162,7 +171,7 @@
             // 
             // pause
             // 
-            pause.Location = new Point(880, 387);
+            pause.Location = new Point(384, 751);
             pause.Name = "pause";
             pause.Size = new Size(94, 29);
             pause.TabIndex = 13;
@@ -173,7 +182,7 @@
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(874, 450);
+            checkBox1.Location = new Point(866, 537);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(123, 24);
             checkBox1.TabIndex = 15;
@@ -181,11 +190,90 @@
             checkBox1.UseVisualStyleBackColor = true;
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
+            // trackBar1
+            // 
+            trackBar1.Location = new Point(810, 346);
+            trackBar1.Maximum = 360;
+            trackBar1.Minimum = 1;
+            trackBar1.Name = "trackBar1";
+            trackBar1.Size = new Size(225, 56);
+            trackBar1.TabIndex = 16;
+            trackBar1.Value = 1;
+            trackBar1.Scroll += trackBar1_Scroll;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Bahnschrift Condensed", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label6.Location = new Point(866, 322);
+            label6.Name = "label6";
+            label6.Size = new Size(101, 21);
+            label6.TabIndex = 17;
+            label6.Text = "Распределение";
+            // 
+            // trackBar2
+            // 
+            trackBar2.Location = new Point(839, 428);
+            trackBar2.Name = "trackBar2";
+            trackBar2.Size = new Size(165, 56);
+            trackBar2.TabIndex = 18;
+            trackBar2.Value = 2;
+            trackBar2.Scroll += trackBar2_Scroll;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Bahnschrift Condensed", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label7.Location = new Point(877, 404);
+            label7.Name = "label7";
+            label7.Size = new Size(90, 21);
+            label7.TabIndex = 19;
+            label7.Text = "Время жизни: ";
+            // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.Location = new Point(810, 567);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(248, 24);
+            checkBox2.TabIndex = 20;
+            checkBox2.Text = "Точки перекрашивания частиц";
+            checkBox2.UseVisualStyleBackColor = true;
+            checkBox2.CheckedChanged += checkBox2_CheckedChanged;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(874, 597);
+            button1.Name = "button1";
+            button1.Size = new Size(139, 29);
+            button1.TabIndex = 21;
+            button1.Text = "Поменять цвет";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // checkBox3
+            // 
+            checkBox3.AutoSize = true;
+            checkBox3.Location = new Point(868, 648);
+            checkBox3.Name = "checkBox3";
+            checkBox3.Size = new Size(129, 24);
+            checkBox3.TabIndex = 22;
+            checkBox3.Text = "Антигравитон";
+            checkBox3.UseVisualStyleBackColor = true;
+            checkBox3.CheckedChanged += checkBox3_CheckedChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1069, 550);
+            ClientSize = new Size(1069, 792);
+            Controls.Add(checkBox3);
+            Controls.Add(button1);
+            Controls.Add(checkBox2);
+            Controls.Add(label7);
+            Controls.Add(trackBar2);
+            Controls.Add(label6);
+            Controls.Add(trackBar1);
             Controls.Add(checkBox1);
             Controls.Add(pause);
             Controls.Add(btnChooseColor);
@@ -205,6 +293,8 @@
             ((System.ComponentModel.ISupportInitialize)tbDirection).EndInit();
             ((System.ComponentModel.ISupportInitialize)tbGraviton).EndInit();
             ((System.ComponentModel.ISupportInitialize)tbSpeed).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar2).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -226,5 +316,12 @@
         private Button btnChooseColor;
         private Button pause;
         private CheckBox checkBox1;
+        private TrackBar trackBar1;
+        private Label label6;
+        private TrackBar trackBar2;
+        private Label label7;
+        private CheckBox checkBox2;
+        private Button button1;
+        private CheckBox checkBox3;
     }
 }

@@ -21,9 +21,10 @@ namespace Система_частиц
 
     public class GravityPoint : IImpactPoint
     {
-        public int Power = 100; // сила притяжения
+        public int Power = 100; // сила притяжения/отталкивания
         public int ParticleCount = 0; // количество частиц внутри круга
         public Color PointColor = Color.Red; // Цвет круга
+        public bool IsAntiGravity = false; // Режим антигравитации
 
         // Сбрасывает количество частиц
         public void ResetParticleCount()
@@ -42,10 +43,20 @@ namespace Система_частиц
             {
                 ParticleCount++; // увеличиваем счетчик частиц
 
-                // Притягиваем частицу
                 float r2 = (float)Math.Max(100, gX * gX + gY * gY);
-                particle.SpeedX += gX * Power / r2;
-                particle.SpeedY += gY * Power / r2;
+
+                if (IsAntiGravity)
+                {
+                    // Отталкиваем частицу (антигравитация)
+                    particle.SpeedX -= gX * Power / r2;
+                    particle.SpeedY -= gY * Power / r2;
+                }
+                else
+                {
+                    // Притягиваем частицу (обычная гравитация)
+                    particle.SpeedX += gX * Power / r2;
+                    particle.SpeedY += gY * Power / r2;
+                }
 
                 // Перекрашиваем частицу при попадании в круг
                 if (particle is ParticleColorful colorfulParticle)
@@ -68,13 +79,12 @@ namespace Система_частиц
             var stringFormat = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
             var font = new Font("Verdana", 10);
 
-            // текст с информацией
-            var text = $"Частиц: {ParticleCount}";
+            // текст с информацией - показываем режим
+            var modeText = IsAntiGravity ? "Антигравитон" : "Гравитон";
+            var text = $"{modeText}\nЧастиц: {ParticleCount}";
             g.DrawString(text, font, new SolidBrush(Color.Black), X, Y, stringFormat);
         }
     }
-
-
 
     public class AntiGravityPoint : IImpactPoint
     {
@@ -156,13 +166,51 @@ namespace Система_частиц
             g.DrawString(text, font, new SolidBrush(Color.White), X, Y, stringFormat);
         }
 
-
         // Метод сброса счетчика
         public void ResetParticlesEaten()
         {
             ParticlesEaten = 0;
         }
+
+        // Добавить в файл IImpactPoint.cs новый класс:
+
+        public class ColorPoint : IImpactPoint
+        {
+            public int Radius = 30; // Радиус точки перекрашивания
+            public Color PointColor = Color.Red; // Цвет точки
+            public bool IsEnabled = true; // Включена ли точка
+
+            public override void ImpactParticle(Particle particle)
+            {
+                if (!IsEnabled) return; // Если точка выключена, не воздействуем
+
+                float gX = X - particle.X;
+                float gY = Y - particle.Y;
+                double distance = Math.Sqrt(gX * gX + gY * gY);
+
+                // Если частица находится внутри радиуса точки
+                if (distance < Radius)
+                {
+                    // Перекрашиваем частицу
+                    if (particle is ParticleColorful colorfulParticle)
+                    {
+                        colorfulParticle.ChangeColor(PointColor);
+                    }
+                }
+            }
+
+            public override void Render(Graphics g)
+            {
+                if (!IsEnabled) return; // Если выключена, не рисуем
+
+                // Рисуем полупрозрачный цветной круг как у гравитона
+                using (var brush = new SolidBrush(Color.FromArgb(100, PointColor)))
+                {
+                    g.FillEllipse(brush, X - Radius, Y - Radius, Radius * 2, Radius * 2);
+                }
+
+                g.DrawEllipse(new Pen(PointColor), X - Radius, Y - Radius, Radius * 2, Radius * 2);
+            }
+        }
     }
-
-
 }
